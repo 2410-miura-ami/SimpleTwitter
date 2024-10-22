@@ -176,48 +176,33 @@ public class UserDao {
 		try {
 
 			String password = user.getPassword();
-			if(!StringUtils.isEmpty(password)) {
-				//パスワードの変更（入力値）がある時
-				//SQL文の作成
-				StringBuilder sql = new StringBuilder();
-				sql.append("UPDATE users SET ");
-				sql.append("    account = ?, ");
-				sql.append("    name = ?, ");
-				sql.append("    email = ?, ");
+
+			//パスワードの変更（入力値）がある時
+			//SQL文の作成
+			StringBuilder sql = new StringBuilder();
+			sql.append("UPDATE users SET ");
+			sql.append("    account = ?, ");
+			sql.append("    name = ?, ");
+			sql.append("    email = ?, ");
+			if(!StringUtils.isBlank(password)) {
 				sql.append("    password = ?, ");
-				sql.append("    description = ?, ");
-				sql.append("    updated_date = CURRENT_TIMESTAMP ");
-				sql.append("WHERE id = ?");
+			}
+			sql.append("    description = ?, ");
+			sql.append("    updated_date = CURRENT_TIMESTAMP ");
+			sql.append("WHERE id = ?");
 
-				//SQLが実行できる準備が整います
-				ps = connection.prepareStatement(sql.toString());
+			//SQLが実行できる準備が整います
+			ps = connection.prepareStatement(sql.toString());
 
-				//SQLの動的部分に値をセットする
-				ps.setString(1, user.getAccount());
-				ps.setString(2, user.getName());
-				ps.setString(3, user.getEmail());
+			//SQLの動的部分に値をセットする
+			ps.setString(1, user.getAccount());
+			ps.setString(2, user.getName());
+			ps.setString(3, user.getEmail());
+			if(!StringUtils.isBlank(password)) {
 				ps.setString(4, user.getPassword());
 				ps.setString(5, user.getDescription());
 				ps.setInt(6, user.getId());
-			}else if(StringUtils.isEmpty(password)) {
-				//パスワードが空の時
-				//SQL文の作成
-				StringBuilder sql = new StringBuilder();
-				sql.append("UPDATE users SET ");
-				sql.append("    account = ?, ");
-				sql.append("    name = ?, ");
-				sql.append("    email = ?, ");
-				sql.append("    description = ?, ");
-				sql.append("    updated_date = CURRENT_TIMESTAMP ");
-				sql.append("WHERE id = ?");
-
-				//SQLが実行できる準備が整います
-				ps = connection.prepareStatement(sql.toString());
-
-				//SQLの動的部分に値をセットする
-				ps.setString(1, user.getAccount());
-				ps.setString(2, user.getName());
-				ps.setString(3, user.getEmail());
+			} else if(StringUtils.isBlank(password)) {
 				ps.setString(4, user.getDescription());
 				ps.setInt(5, user.getId());
 			}

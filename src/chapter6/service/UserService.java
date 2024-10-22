@@ -140,7 +140,7 @@ public class UserService {
 			// パスワード暗号化
 			//パスワードの変更入力がある時だけ暗号化する
 			String password = user.getPassword();
-				if(!StringUtils.isBlank(password)) {
+			if(!StringUtils.isBlank(password)) {
 				String encPassword = CipherUtil.encrypt(user.getPassword());
 				user.setPassword(encPassword);
 			}

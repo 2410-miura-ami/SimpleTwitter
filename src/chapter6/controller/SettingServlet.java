@@ -130,7 +130,7 @@ public class SettingServlet extends HttpServlet {
 		}
 
 		User userAccount  = new UserService().select(account);
-		if((userAccount.getId() != id) && (userAccount != null)) { //idの比較で自分自身ではない、かつ、userAccountがnullではない時の条件
+		if((userAccount != null) && (userAccount.getId() != id)) { //idの比較で自分自身ではない、かつ、userAccountがnullではない時の条件
 			errorMessages.add("すでに存在するアカウントです");
 		}
 

@@ -129,6 +129,11 @@ public class SignUpServlet extends HttpServlet {
 			errorMessages.add("メールアドレスは50文字以下で入力してください");
 		}
 
+		User userAccount = new UserService().select(account);
+		if(userAccount != null) {
+			errorMessages.add("すでに存在するアカウントです");
+		}
+
 		if (errorMessages.size() != 0) {
 			return false;
 		}

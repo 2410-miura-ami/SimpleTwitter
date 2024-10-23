@@ -165,6 +165,33 @@ public class UserDao {
 		}
 	}
 
+	public User select(Connection connection, String account) {
+
+		PreparedStatement ps = null;
+		try {
+			String sql = "SELECT * FROM users WHERE account = ?";//アカウント名を指定してusersを参照
+
+			ps = connection.prepareStatement(sql);
+			//値のセット
+			ps.setString(1, account);
+
+			ResultSet rs = ps.executeQuery();
+
+			List<User> users = toUsers(rs);
+			if (users.isEmpty()) {
+				return null;
+			} else if (2 <= users.size()) {
+				throw new IllegalStateException("ユーザーが重複しています");
+			} else { //登録しようとしているアカウントがすでに１個ある時はelse文に入る。
+				return users.get(0);
+			}
+		} catch (SQLException e) {
+			throw new SQLRuntimeException(e);
+		} finally {
+			close(ps);
+		}
+	}
+
 	public void update(Connection connection, User user) {
 
 		log.info(new Object() {
@@ -184,7 +211,7 @@ public class UserDao {
 			sql.append("    account = ?, ");
 			sql.append("    name = ?, ");
 			sql.append("    email = ?, ");
-			if(!StringUtils.isBlank(password)) {
+			if (!StringUtils.isBlank(password)) {
 				sql.append("    password = ?, ");
 			}
 			sql.append("    description = ?, ");
@@ -198,11 +225,11 @@ public class UserDao {
 			ps.setString(1, user.getAccount());
 			ps.setString(2, user.getName());
 			ps.setString(3, user.getEmail());
-			if(!StringUtils.isBlank(password)) {
+			if (!StringUtils.isBlank(password)) {
 				ps.setString(4, user.getPassword());
 				ps.setString(5, user.getDescription());
 				ps.setInt(6, user.getId());
-			} else if(StringUtils.isBlank(password)) {
+			} else if (StringUtils.isBlank(password)) {
 				ps.setString(4, user.getDescription());
 				ps.setInt(5, user.getId());
 			}

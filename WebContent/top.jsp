@@ -83,7 +83,22 @@
 						<fmt:formatDate value="${message.createdDate}"
 							pattern="yyyy/MM/dd HH:mm:ss" />
 					</div>
+					<c:if test="${loginUser.id == message.userId}">
+						<form action="deleteMessage" method="post">
+							 <input type="submit" value="削除" />
+							 <input name="messageId" value="${message.id}"  type="hidden" />
+							 <!-- type="hidden"とすることで、画面上では見えないようにしつつ、パラメータとして扱っている。 -->
+
+						</form>
+						<form action="edit" method="get">
+							 <input type="submit" value="編集" />
+							 <input name="messageId" value="${message.id}"  type="hidden" />
+							 <!-- type="hidden"とすることで、画面上では見えないようにしつつ、パラメータとして扱っている。 -->
+							 <br>
+						</form>
+					</c:if>
 				</div>
+
 			</c:forEach>
 		</div>
 

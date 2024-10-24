@@ -42,6 +42,7 @@ public class LoginServlet extends HttpServlet {
 				" : " + new Object() {
 				}.getClass().getEnclosingMethod().getName());
 
+		//呼び出す画面を指定して、fowardで画面遷移
 		request.getRequestDispatcher("login.jsp").forward(request, response);
 	}
 
@@ -54,6 +55,7 @@ public class LoginServlet extends HttpServlet {
 				" : " + new Object() {
 				}.getClass().getEnclosingMethod().getName());
 
+		//リクエストの値を取得（login.jspでinputタグのname属性に付けた名前で取得できる）
 		String accountOrEmail = request.getParameter("accountOrEmail");
 		String password = request.getParameter("password");
 
@@ -67,10 +69,10 @@ public class LoginServlet extends HttpServlet {
 			return;
 		}
 
+		//セッションにデータを登録する場合、まず始めにセッションオブジェクトを生成。セッションを利用できるようになる
 		HttpSession session = request.getSession();
 		//取得したUserオブジェクトをセッションにセット。
-		//ログイン情報はユーザがログアウトしない限りは常に保持しておきたいため、
-		//画面をまたいでも保存ができるセッション領域に格納
+		//ログイン情報はユーザがログアウトしない限りは常に保持しておきたいため、画面をまたいでも保存ができるセッション領域に格納
 		session.setAttribute("loginUser", user);
 		//トップ画面へ遷移
 		response.sendRedirect("./");

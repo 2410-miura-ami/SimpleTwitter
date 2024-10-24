@@ -67,7 +67,9 @@ public class SignUpServlet extends HttpServlet {
 
 		User user = getUser(request);
 		if (!isValid(user, errorMessages)) {
+			//リクエストに値をセット
 			request.setAttribute("errorMessages", errorMessages);
+			//呼び出す画面を指定し、fowardで画面遷移
 			request.getRequestDispatcher("signup.jsp").forward(request, response);
 			return;
 		}

@@ -17,6 +17,10 @@ body {
 	height: 56px;
 }
 
+.tweet-box .tweet-edit{
+	text-align: left;
+}
+
 .header {
 	text-align: right;
 }

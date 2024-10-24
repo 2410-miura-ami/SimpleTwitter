@@ -143,6 +143,7 @@ public class UserDao {
 
 			ps = connection.prepareStatement(sql);
 
+			//値のセット
 			ps.setInt(1, id);
 
 			ResultSet rs = ps.executeQuery();

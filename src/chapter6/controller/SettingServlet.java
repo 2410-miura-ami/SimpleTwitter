@@ -46,12 +46,17 @@ public class SettingServlet extends HttpServlet {
 				" : " + new Object() {
 				}.getClass().getEnclosingMethod().getName());
 
+		//セッションにデータを登録する場合、まず始めにセッションオブジェクトを生成。セッションが利用できるようになる
 		HttpSession session = request.getSession();
+		//LoginServletでセッションに"loginUser"という名前でセットした値を受け取る
+		//登録されたデータはObject型で取得されるため、取得されたデータを適切に扱うためには、型をセッションへ登録される前の型に明示的に変換
 		User loginUser = (User) session.getAttribute("loginUser");
 
 		User user = new UserService().select(loginUser.getId());
 
+		//リクエストに「user」という名前で上記の「user」をセット
 		request.setAttribute("user", user);
+		//呼び出す画面を指定して、fowardで画面遷移
 		request.getRequestDispatcher("setting.jsp").forward(request, response);
 	}
 
@@ -64,7 +69,9 @@ public class SettingServlet extends HttpServlet {
 				" : " + new Object() {
 				}.getClass().getEnclosingMethod().getName());
 
+		//セッションにデータを登録する場合、まず始めにセッションオブジェクトを生成
 		HttpSession session = request.getSession();
+
 		List<String> errorMessages = new ArrayList<String>();
 
 		User user = getUser(request);
@@ -78,12 +85,15 @@ public class SettingServlet extends HttpServlet {
 		}
 
 		if (errorMessages.size() != 0) {
+			//リクエストへ値のセット
 			request.setAttribute("errorMessages", errorMessages);
 			request.setAttribute("user", user);
+			//呼び出す画面を指定して、fowardで画面遷移
 			request.getRequestDispatcher("setting.jsp").forward(request, response);
 			return;
 		}
 
+		//セッションへ値のセット
 		session.setAttribute("loginUser", user);
 		response.sendRedirect("./");
 	}

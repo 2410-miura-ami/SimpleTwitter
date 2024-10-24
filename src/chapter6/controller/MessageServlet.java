@@ -47,6 +47,7 @@ public class MessageServlet extends HttpServlet {
 				" : " + new Object() {
 				}.getClass().getEnclosingMethod().getName());
 
+		//セッションにデータを登録する場合、まず始めにセッションオブジェクトを生成
 		HttpSession session = request.getSession();
 		List<String> errorMessages = new ArrayList<String>();
 

@@ -69,7 +69,7 @@ public class MessageDao {
 	}
 
 	//selectメソッド追加（つぶやきの編集）
-	public List<Message> selectEdit(Connection connection, String messageId) {
+	public List<Message> selectEdit(Connection connection, int messageId) {
 
 		log.info(new Object() {
 		}.getClass().getEnclosingClass().getName() +
@@ -83,7 +83,7 @@ public class MessageDao {
 			ps = connection.prepareStatement(sql);
 
 			//値のセット
-			ps.setString(1, messageId);
+			ps.setInt(1, messageId);
 
 			ResultSet rs = ps.executeQuery();
 
@@ -100,7 +100,7 @@ public class MessageDao {
 		}
 	}
 
-	public void update(Connection connection, String messageIdEdit, String textEdit) {
+	public void update(Connection connection, int messageIdEdit, String textEdit) {
 
 		log.info(new Object() {
 		}.getClass().getEnclosingClass().getName() +
@@ -121,7 +121,7 @@ public class MessageDao {
 
 			//SQLの動的部分に値をセットする
 			ps.setString(1, textEdit);
-			ps.setString(2, messageIdEdit);
+			ps.setInt(2, messageIdEdit);
 
 			ps.executeUpdate();
 
@@ -134,7 +134,7 @@ public class MessageDao {
 		}
 	}
 
-	public void delete(Connection connection, String messageId) {
+	public void delete(Connection connection, int messageId) {
 
 		log.info(new Object() {
 		}.getClass().getEnclosingClass().getName() +
@@ -152,7 +152,7 @@ public class MessageDao {
 			ps = connection.prepareStatement(sql.toString());
 
 			//SQLの動的部分に値をセットする
-			ps.setString(1, messageId);
+			ps.setInt(1, messageId);
 
 			ps.executeUpdate();
 		} catch (SQLException e) {
@@ -178,6 +178,7 @@ public class MessageDao {
 				message.setId(rs.getInt("id"));
 				message.setText(rs.getString("text"));
 				message.setUserId(rs.getInt("user_id"));
+				message.setUpdatedDate(rs.getTimestamp("updated_date"));
 				message.setCreatedDate(rs.getTimestamp("created_date"));
 
 				messages.add(message);

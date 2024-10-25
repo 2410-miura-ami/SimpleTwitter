@@ -17,7 +17,7 @@ body {
 	height: 56px;
 }
 
-.tweet-box .tweet-edit{
+.tweet-box .tweet-edit {
 	text-align: left;
 }
 
@@ -64,6 +64,10 @@ a.profile .account {
 	margin-bottom: 00px;
 	margin-left: 00px;
 	background-color: #ECECFF;
+}
+
+pre {
+	white-space: pre-wrap;
 }
 
 .message-icon {

@@ -107,7 +107,7 @@ public class MessageService {
 		}
 	}
 
-	public List<Message> selectEdit(String messageId) {
+	public List<Message> selectEdit(int messageId) {
 
 		log.info(new Object() {
 		}.getClass().getEnclosingClass().getName() +
@@ -136,7 +136,7 @@ public class MessageService {
 		}
 	}
 
-	public void update(String messageIdEdit, String textEdit) {
+	public void update(int messageIdEdit, String textEdit) {
 
 		log.info(new Object() {
 		}.getClass().getEnclosingClass().getName() +
@@ -165,7 +165,7 @@ public class MessageService {
 		}
 	}
 
-	public void delete(String messageId) {
+	public void delete(int messageId) {
 
 		log.info(new Object() {
 		}.getClass().getEnclosingClass().getName() +

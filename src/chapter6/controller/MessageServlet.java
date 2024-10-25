@@ -58,6 +58,7 @@ public class MessageServlet extends HttpServlet {
 			return;
 		}
 
+		//textをセットし直している
 		Message message = new Message();
 		message.setText(text);
 

@@ -104,7 +104,7 @@ public class EditServlet extends HttpServlet {
 		String text = request.getParameter("text");
 
 		//messageIdEditを数値型に変換
-		int messageIdEdit = Integer.valueOf(messageIdEditString);
+		int messageIdEdit = Integer.parseInt(messageIdEditString);
 
 		List<String> errorMessages = new ArrayList<String>();
 

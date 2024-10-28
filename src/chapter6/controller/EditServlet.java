@@ -10,6 +10,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -49,35 +50,41 @@ public class EditServlet extends HttpServlet {
 		//取得したmessageIdSting(編集画面URLのつぶやきID)が数字ではない時、エラーメッセージの表示
 		List<String> errorMessages = new ArrayList<String>();
 
+		//セッションにデータを登録する場合、まず始めにセッションオブジェクトを生成
+		HttpSession session = request.getSession();
+
 		if(!messageIdString.matches("^[0-9]+$") || (StringUtils.isBlank(messageIdString))) {
 			errorMessages.add("不正なパラメータです");
 			//エラーメッセージを格納して、トップ画面へ遷移
-			request.setAttribute("errorMessages", errorMessages);
-			request.getRequestDispatcher("./").forward(request, response);
+			session.setAttribute("errorMessages", errorMessages);
+			//リダイレクトで遷移（今回は他のサーバーも通ってる）
+			response.sendRedirect("./");
+			return;
 		}
 
 		//messageIdを数値型に変換
-		int messageId = Integer.valueOf(messageIdString);
+		int messageId = Integer.parseInt(messageIdString);
 
 		//受け取ったmessageIdを使ってDBにて参照していくために、MessageServiceを呼び出す
-		List<Message> messages = new MessageService().selectEdit(messageId);
+		//最終的に値をBeansに詰めたいから、型はMessage型
+		Message message = new MessageService().select(messageId);
 
-		//つぶやきId存在していないもので処理が進んだら、値はnullで帰ってくるはず
-		if(messages.size() == 0) {
+		//つぶやきId存在していないもので処理が進んだら、値なしで返ってくる
+		if(message == null) {
 			errorMessages.add("不正なパラメータです");
 			//エラーメッセージを格納して、トップ画面へ遷移
-			request.setAttribute("errorMessages", errorMessages);
-			request.getRequestDispatcher("./").forward(request, response);
+			session.setAttribute("errorMessages", errorMessages);
+			//リダイレクトで遷移（今回は他のサーバーも通ってる）
+			response.sendRedirect("./");
+			return;
 		}
 
-		String messageText =  (String)messages.get(0).getText();
-		int messageIdEdit = (int)messages.get(0).getId();
+		String messageText =  (String)message.getText();
+		int messageIdEdit = (int)message.getId();
 
-		//String message = messages.get(0).getId();
 		//取得した値をリクエストにセット
 		request.setAttribute("messageText", messageText);
 		request.setAttribute("messageIdEdit", messageIdEdit);
-		//request.setAttribute("messages", messages);
 
 		//呼び出す画面を指定して、fowardで画面遷移
 		request.getRequestDispatcher("edit.jsp").forward(request, response);

@@ -42,9 +42,9 @@ public class DeleteMessageServlet extends HttpServlet {
 		String messageIdString = request.getParameter("messageId");
 
 		//取得したmessageIdStringを数値型に変換
-		int messageId = Integer.valueOf(messageIdString);
+		int messageId = Integer.parseInt(messageIdString);
 
-        new MessageService().delete(messageId);
+		new MessageService().delete(messageId);
 
 		//トップ画面へ遷移
 		response.sendRedirect("./");

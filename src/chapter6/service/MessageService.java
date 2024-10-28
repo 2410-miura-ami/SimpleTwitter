@@ -107,7 +107,7 @@ public class MessageService {
 		}
 	}
 
-	public List<Message> selectEdit(int messageId) {
+	public Message select(int messageId) {
 
 		log.info(new Object() {
 		}.getClass().getEnclosingClass().getName() +
@@ -117,10 +117,11 @@ public class MessageService {
 		Connection connection = null;
 		try {
 			connection = getConnection();
-			List<Message> messages = new MessageDao().selectEdit(connection, messageId);
+			//最終的に値をBeansに詰めたいから、型はMessage型
+			Message message = new MessageDao().select(connection, messageId);
 			commit(connection);
 
-			return messages;
+			return message;
 		} catch (RuntimeException e) {
 			rollback(connection);
 			log.log(Level.SEVERE, new Object() {

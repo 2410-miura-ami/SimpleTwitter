@@ -88,7 +88,6 @@
 							 <input type="submit" value="削除" />
 							 <input name="messageId" value="${message.id}"  type="hidden" />
 							 <!-- type="hidden"とすることで、画面上では見えないようにしつつ、パラメータとして扱っている。 -->
-
 						</form>
 						<form action="edit" method="get">
 							 <input type="submit" value="編集" />

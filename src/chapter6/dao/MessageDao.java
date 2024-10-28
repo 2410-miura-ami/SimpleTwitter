@@ -69,7 +69,7 @@ public class MessageDao {
 	}
 
 	//selectメソッド追加（つぶやきの編集）
-	public List<Message> selectEdit(Connection connection, int messageId) {
+	public Message select(Connection connection, int messageId) {
 
 		log.info(new Object() {
 		}.getClass().getEnclosingClass().getName() +
@@ -88,8 +88,11 @@ public class MessageDao {
 			ResultSet rs = ps.executeQuery();
 
 			List<Message> messages = toMessages(rs);
-
-			return messages;
+			if (messages.isEmpty()) {
+				return null;
+			} else {
+				return messages.get(0);
+			}
 
 		} catch (SQLException e) {
 			log.log(Level.SEVERE, new Object() {

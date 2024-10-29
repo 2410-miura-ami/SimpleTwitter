@@ -52,6 +52,8 @@ public class UserMessageDao {
 			sql.append("FROM messages ");
 			sql.append("INNER JOIN users ");//内部結合
 			sql.append("ON messages.user_id = users.id ");
+			//つぶやきの絞り込み
+			//sql.append("WHERE created_date BETWEEN start = ? AND end = ? ");
 
 			//パラメータ受け取ったかどうかの条件分岐
 			if(id != null) {
@@ -61,6 +63,10 @@ public class UserMessageDao {
 
 			//SQL実行の準備
 			ps = connection.prepareStatement(sql.toString());
+
+			//値のセット
+			//ps.setDate(1, "2020-01-01 00:00:00");
+			//ps.setDate(2,  "");//javaで現在の日時を取得
 
 			//値のセット
 			if(id != null) {

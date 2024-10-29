@@ -11,10 +11,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import chapter6.beans.User;
+import chapter6.beans.UserComment;
 import chapter6.beans.UserMessage;
 import chapter6.logging.InitApplication;
+import chapter6.service.CommentService;
 import chapter6.service.MessageService;
-
 
 @WebServlet(urlPatterns = { "/index.jsp" })
 
@@ -48,22 +49,29 @@ public class TopServlet extends HttpServlet {
 		//セッションからログインユーザーを取得し、ログインユーザーのオブジェクトが取得できた場合(nullではなかった場合)には
 		//変数isShowMessageFormにtrueを設定するというコード
 		boolean isShowMessageForm = false;
-        User user = (User) request.getSession().getAttribute("loginUser");
-        if (user != null) {
-            isShowMessageForm = true;
-        }
+		User user = (User) request.getSession().getAttribute("loginUser");
+		if (user != null) {
+			isShowMessageForm = true;
+		}
 
-        /*
-         * String型のuser_idの値をrequest.getParameter("user_id")で
-         * JSPから受け取るように設定
-         * MessageServiceのselectに引数としてString型のuser_idを追加
-         */
-        String userId = request.getParameter("user_id");
-        List<UserMessage> messages = new MessageService().select(userId);
+		/*
+		 * String型のuser_idの値をrequest.getParameter("user_id")で
+		 * JSPから受け取るように設定
+		 * MessageServiceのselectに引数としてString型のuser_idを追加
+		 */
+		String userId = request.getParameter("user_id");
+		List<UserMessage> messages = new MessageService().select(userId);
 
-        //リクエストスコープに"messages"というkeyで、"messages"というvalueを設定。
-        request.setAttribute("messages", messages);
-        request.setAttribute("isShowMessageForm", isShowMessageForm);
+
+		List<UserComment> comments = new CommentService().select();
+		//リクエストにcommentを格納
+		request.setAttribute("comments", comments);
+
+
+		//リクエストスコープに"messages"というkeyで、"messages"というvalueを設定。
+		request.setAttribute("messages", messages);
+		request.setAttribute("isShowMessageForm", isShowMessageForm);
+
 		request.getRequestDispatcher("/top.jsp").forward(request, response);
 	}
 }

@@ -4,6 +4,8 @@ import static chapter6.utils.CloseableUtil.*;
 import static chapter6.utils.DBUtil.*;
 
 import java.sql.Connection;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -67,6 +69,23 @@ public class MessageService {
 				}.getClass().getEnclosingMethod().getName());
 
 		final int LIMIT_NUM = 1000;
+		//絞り込みのデフォルト値の設定
+		//開始日時のデフォルト値。startDefault
+
+		SimpleDateFormat df = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+		String startDefault = df.format("2020/01/01 00:00:00");
+
+
+		//終了日時のデフォルト値（現在日時の取得）formatNowDate
+		Date nowDate = new Date();
+		SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+		String endDefault = sdf1.format(nowDate);
+
+		//if文で確認
+		//startが入力されていたら→
+		//endが入力されていたら→
+
+
 
 		Connection connection = null;
 		try {

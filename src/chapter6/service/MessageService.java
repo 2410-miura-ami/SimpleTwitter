@@ -75,27 +75,28 @@ public class MessageService {
 
 		//終了日時のデフォルト値（現在日時の取得）endDate
 		Date nowDate = new Date();
-		SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-		String endDefault = sdf1.format(nowDate);
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+		String endDefault = sdf.format(nowDate);
 
-		//if文で確認
-		//startが入力されていたら→
-		//endが入力されていたら→
-		if (!StringUtils.isEmpty(startDate)) {
-			startDate = startDate + " 00:00:00";
-		} else {
-			startDate = startDefault;
-		}
-
-		if (!StringUtils.isEmpty(endDate)) {
-			endDate = endDate + " 23:59:59";
-		} else {
-			endDate = endDefault;
-		}
 
 		Connection connection = null;
 		try {
 			connection = getConnection();
+
+			//if文で確認
+			//startが入力されていたら→
+			//endが入力されていたら→
+			if (!StringUtils.isEmpty(startDate)) {
+				startDate = startDate + " 00:00:00";
+			} else {
+				startDate = startDefault;
+			}
+
+			if (!StringUtils.isEmpty(endDate)) {
+				endDate = endDate + " 23:59:59";
+			} else {
+				endDate = endDefault;
+			}
 
 			/*
 			* idをnullで初期化

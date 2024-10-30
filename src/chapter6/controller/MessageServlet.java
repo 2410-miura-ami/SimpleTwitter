@@ -67,11 +67,6 @@ public class MessageServlet extends HttpServlet {
 
 		new MessageService().insert(message);
 
-		/*
-		//Message型のmessageをセッションに格納（CommentServletで使う）
-		session.setAttribute("message", message);
-		*/
-
 		//トップ画面へ遷移
 		response.sendRedirect("./");
 	}

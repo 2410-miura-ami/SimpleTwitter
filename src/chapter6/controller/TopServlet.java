@@ -54,23 +54,27 @@ public class TopServlet extends HttpServlet {
 			isShowMessageForm = true;
 		}
 
+		//つぶやきの絞り込み。パラメータ取得
+		String startDate = request.getParameter("startDate");
+		String endDate = request.getParameter("endDate");
+
 		/*
 		 * String型のuser_idの値をrequest.getParameter("user_id")で
 		 * JSPから受け取るように設定
 		 * MessageServiceのselectに引数としてString型のuser_idを追加
 		 */
 		String userId = request.getParameter("user_id");
-		List<UserMessage> messages = new MessageService().select(userId);
-
+		List<UserMessage> messages = new MessageService().select(userId, startDate, endDate);
 
 		List<UserComment> comments = new CommentService().select();
-		//リクエストにcommentを格納
+		//リクエストにcommentsを格納
 		request.setAttribute("comments", comments);
-
 
 		//リクエストスコープに"messages"というkeyで、"messages"というvalueを設定。
 		request.setAttribute("messages", messages);
 		request.setAttribute("isShowMessageForm", isShowMessageForm);
+		request.setAttribute("startDate", startDate);
+		request.setAttribute("endDate", endDate);
 
 		request.getRequestDispatcher("/top.jsp").forward(request, response);
 	}

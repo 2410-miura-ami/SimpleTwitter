@@ -31,7 +31,7 @@ public class UserMessageDao {
 
 	}
 
-	public List<UserMessage> select(Connection connection,  Integer id, int num) {
+	public List<UserMessage> select(Connection connection, Integer id, int num, String startDate, String endDate) {
 
 		log.info(new Object() {
 		}.getClass().getEnclosingClass().getName() +
@@ -53,11 +53,12 @@ public class UserMessageDao {
 			sql.append("INNER JOIN users ");//内部結合
 			sql.append("ON messages.user_id = users.id ");
 			//つぶやきの絞り込み
-			//sql.append("WHERE created_date BETWEEN start = ? AND end = ? ");
+			//WHERE句の中でBETWEEN使うときは、バインド変数の構文に注意！イコールいらない。「?」のみでOK
+			sql.append("WHERE messages.created_date BETWEEN ? AND ? ");
 
 			//パラメータ受け取ったかどうかの条件分岐
-			if(id != null) {
-				sql.append("WHERE user_id = ? ");
+			if (id != null) {
+				sql.append("AND user_id = ? ");
 			}
 			sql.append("ORDER BY created_date DESC limit " + num);//ソート
 
@@ -65,12 +66,12 @@ public class UserMessageDao {
 			ps = connection.prepareStatement(sql.toString());
 
 			//値のセット
-			//ps.setDate(1, "2020-01-01 00:00:00");
-			//ps.setDate(2,  "");//javaで現在の日時を取得
+			ps.setString(1, startDate);
+			ps.setString(2, endDate);
 
 			//値のセット
-			if(id != null) {
-				ps.setInt(1, id);
+			if (id != null) {
+				ps.setInt(3, id);
 			}
 
 			//SQL実行

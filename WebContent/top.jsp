@@ -45,11 +45,11 @@
 			</div>
 		</c:if>
 
-		<c:if test="${ not empty loginUser }">
-			日付
-			<input type="date" name="startDate" value= />～<input type="date" name="endDate" />
+		日付
+		<form action="" method="get">
+			<input type="date" name="startDate" value="${startDate}" />～<input type="date" name="endDate" value="${endDate}" />
 			<input type="submit" value="絞り込み" />
-		</c:if>
+		</form>
 
 		<c:if test="${ not empty errorMessages }">
 			<div class="errorMessages">

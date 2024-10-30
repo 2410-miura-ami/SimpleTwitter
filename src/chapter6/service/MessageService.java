@@ -61,7 +61,7 @@ public class MessageService {
 		}
 	}
 
-	public List<UserMessage> select(String userId) {
+	public List<UserMessage> select(String userId, String startDate, String endDate) {
 
 		log.info(new Object() {
 		}.getClass().getEnclosingClass().getName() +
@@ -71,12 +71,9 @@ public class MessageService {
 		final int LIMIT_NUM = 1000;
 		//絞り込みのデフォルト値の設定
 		//開始日時のデフォルト値。startDefault
+		String startDefault = "2020/01/01 00:00:00";
 
-		SimpleDateFormat df = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-		String startDefault = df.format("2020/01/01 00:00:00");
-
-
-		//終了日時のデフォルト値（現在日時の取得）formatNowDate
+		//終了日時のデフォルト値（現在日時の取得）endDate
 		Date nowDate = new Date();
 		SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 		String endDefault = sdf1.format(nowDate);
@@ -84,8 +81,17 @@ public class MessageService {
 		//if文で確認
 		//startが入力されていたら→
 		//endが入力されていたら→
+		if (!StringUtils.isEmpty(startDate)) {
+			startDate = startDate + " 00:00:00";
+		} else {
+			startDate = startDefault;
+		}
 
-
+		if (!StringUtils.isEmpty(endDate)) {
+			endDate = endDate + " 23:59:59";
+		} else {
+			endDate = endDefault;
+		}
 
 		Connection connection = null;
 		try {
@@ -107,7 +113,7 @@ public class MessageService {
 			* idがnull以外だったら、その値に対応するユーザーIDの投稿を取得する
 			*/
 
-			List<UserMessage> messages = new UserMessageDao().select(connection, id, LIMIT_NUM);
+			List<UserMessage> messages = new UserMessageDao().select(connection, id, LIMIT_NUM, startDate, endDate);
 			commit(connection);
 
 			return messages;

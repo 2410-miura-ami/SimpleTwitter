@@ -132,7 +132,7 @@ public class SignUpServlet extends HttpServlet {
 		}
 
 		User duplicationAccount = new UserService().select(account);
-		if(duplicationAccount != null) {
+		if (duplicationAccount != null) {
 			errorMessages.add("すでに存在するアカウントです");
 		}
 
